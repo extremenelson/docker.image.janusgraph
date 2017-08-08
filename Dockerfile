@@ -1,10 +1,13 @@
 # JanusGraph
 
-FROM takaomag/base:2017.07.07.07.16
+FROM takaomag/base:2017.08.07.07.13
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \
-    X_JANUSGRAPH_GIT_CHECKOUT=master
+#     X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
+    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
+#     X_JANUSGRAPH_GIT_CHECKOUT=master
+    X_JANUSGRAPH_GIT_CHECKOUT=tp33
 
 #     X_JANUSGRAPH_VERSION=0.1.1
 
@@ -13,7 +16,6 @@ RUN \
     export TERM=dumb && \
     export LANG='en_US.UTF-8' && \
     source /opt/local/bin/x-set-shell-fonts-env.sh && \
-
 
     echo -e "${FONT_INFO}[INFO] Update package database${FONT_DEFAULT}" && \
     reflector --latest 100 --verbose --sort score --save /etc/pacman.d/mirrorlist && \
@@ -33,8 +35,8 @@ RUN \
     cd /var/tmp && \
     if [[ "${X_JANUSGRAPH_VERSION}" ]];then\
       curl --silent --location --fail --retry 5 "https://github.com/JanusGraph/janusgraph/releases/download/v${X_JANUSGRAPH_VERSION}/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2.zip" | bsdtar -xf- -C /var/tmp;\
-    else\
-      git clone -b ${X_JANUSGRAPH_GIT_CHECKOUT} https://github.com/JanusGraph/janusgraph.git && \
+    elif [[ "${X_JANUSGRAPH_GIT_CHECKOUT}" ]];then\
+      git clone -b ${X_JANUSGRAPH_GIT_CHECKOUT} ${X_JANUSGRAPH_GIT_URL} && \
       cd janusgraph && \
       mvn clean install -Pjanusgraph-release -Dgpg.skip=true -DskipTests=true -Dtest.skip.tp=true && \
       cd /var/tmp && \
@@ -42,6 +44,9 @@ RUN \
       unzip janusgraph/janusgraph-dist/janusgraph-dist-hadoop-2/target/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2.zip && \
       mkdir -p janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/doc && \
       mv janusgraph/janusgraph-dist/target/docs/{chunk,single} janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/doc/.; \
+    else\
+      echo -e "${FONT_ERROR}[ERROR] Either X_JANUSGRAPH_VERSION or X_JANUSGRAPH_GIT_CHECKOUT MUST be specified.${FONT_DEFAULT}" 1>&2 && \
+      exit 1; \
     fi && \
     porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -- mv janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2 /opt/local/. && \
     porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -+ -- ln -sf /opt/local/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2 /opt/local/janusgraph && \

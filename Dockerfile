@@ -4,7 +4,7 @@ FROM takaomag/base:2017.08.07.07.13
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \
-#    X_JANUSGRAPH_VERSION=0.1.1 \
+    X_JANUSGRAPH_VERSION=0.1.1 \
     X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
 #    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
     X_CASSANDRA_DRIVER_VERSION=3.3.0 \
@@ -32,7 +32,7 @@ RUN \
     sudo -u nobody yaourt -S --needed --noconfirm --noprogressbar "${REQUIRED_PACKAGES[@]}" && \
     echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PACKAGES[@]}]${FONT_SUCCESS}" && \
 
-    echo -e "${FONT_INFO}[INFO] Install janusgraph-${X_JANUSGRAPH_VERSION}${FONT_DEFAULT}" && \
+    echo -e "${FONT_INFO}[INFO] Install janusgraph-${X_JANUSGRAPH_VERSION}${X_JANUSGRAPH_GIT_CHECKOUT}${FONT_DEFAULT}" && \
     cd /var/tmp && \
     if [[ "${X_JANUSGRAPH_VERSION}" ]];then\
       curl --silent --location --fail --retry 5 "https://github.com/JanusGraph/janusgraph/releases/download/v${X_JANUSGRAPH_VERSION}/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2.zip" | bsdtar -xf- -C /var/tmp && \

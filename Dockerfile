@@ -7,6 +7,7 @@ ENV \
 #    X_JANUSGRAPH_VERSION=0.1.1 \
     X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
 #    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
+    X_CASSANDRA_DRIVER_VERSION=3.3.0 \
     X_JANUSGRAPH_GIT_CHECKOUT=master
 #    X_JANUSGRAPH_GIT_CHECKOUT=tp33 \
 
@@ -50,6 +51,7 @@ RUN \
       exit 1; \
     fi && \
     X_GREMLIN_VERSION=$(janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin.sh -v 2>/dev/null | egrep -o "Apache TinkerPop [^ ]+" | cut -d ' ' -f3) && \
+    LD_LIBRARY_PATH=/opt/local/hadoop/lib/native janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin-server.sh -i com.datastax.cassandra cassandra-driver-core ${X_CASSANDRA_DRIVER_VERSION} && \
     janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python ${X_GREMLIN_VERSION} && \
     porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -- mv janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2 /opt/local/. && \
     porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -+ -- ln -sf /opt/local/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2 /opt/local/janusgraph && \

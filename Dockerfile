@@ -4,7 +4,7 @@ FROM takaomag/base:2017.08.07.07.13
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \
-    X_JANUSGRAPH_VERSION=0.1.1 \
+#    X_JANUSGRAPH_VERSION=0.1.1 \
     X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
 #    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
     X_CASSANDRA_DRIVER_VERSION=3.3.0 \

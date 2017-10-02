@@ -23,9 +23,9 @@ RUN \
     sudo -u nobody yaourt -Syy && \
     echo -e "${FONT_SUCCESS}[SUCCESS] Update package database${FONT_DEFAULT}" && \
 
-    echo -e "${FONT_INFO}[INFO] Refresh package developer keys${FONT_DEFAULT}" && \
-    pacman-key --refresh-keys && \
-    echo -e "${FONT_SUCCESS}[SUCCESS] Refresh package developer keys${FONT_DEFAULT}" && \
+#    echo -e "${FONT_INFO}[INFO] Refresh package developer keys${FONT_DEFAULT}" && \
+#    pacman-key --refresh-keys && \
+#    echo -e "${FONT_SUCCESS}[SUCCESS] Refresh package developer keys${FONT_DEFAULT}" && \
 
     REQUIRED_PACKAGES=("jdk8-openjdk") && \
     echo -e "${FONT_INFO}[INFO] Install required packages [${REQUIRED_PACKAGES[@]}]${FONT_DEFAULT}" && \

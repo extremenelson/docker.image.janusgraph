@@ -1,6 +1,6 @@
 # JanusGraph
 
-FROM takaomag/base:2017.08.07.07.13
+FROM takaomag/base:2017.10.02.01.36
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \

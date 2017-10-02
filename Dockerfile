@@ -33,6 +33,7 @@ RUN \
     echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PACKAGES[@]}]${FONT_SUCCESS}" && \
 
     echo -e "${FONT_INFO}[INFO] Install janusgraph-${X_JANUSGRAPH_VERSION}${X_JANUSGRAPH_GIT_CHECKOUT}${FONT_DEFAULT}" && \
+    archlinux-java set java-8-openjdk && \
     cd /var/tmp && \
     if [[ "${X_JANUSGRAPH_VERSION}" ]];then\
       curl --silent --location --fail --retry 5 "https://github.com/JanusGraph/janusgraph/releases/download/v${X_JANUSGRAPH_VERSION}/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2.zip" | bsdtar -xf- -C /var/tmp && \

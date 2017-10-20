@@ -4,8 +4,8 @@ FROM takaomag/base:2017.10.02.01.36
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \
-#    X_JANUSGRAPH_VERSION=0.1.1 \
-    X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
+    X_JANUSGRAPH_VERSION=0.2.0 \
+#    X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
 #    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
     X_CASSANDRA_DRIVER_VERSION=3.3.0 \
     X_JANUSGRAPH_GIT_CHECKOUT=master
@@ -37,7 +37,7 @@ RUN \
     cd /var/tmp && \
     if [[ "${X_JANUSGRAPH_VERSION}" ]];then\
       curl --silent --location --fail --retry 5 "https://github.com/JanusGraph/janusgraph/releases/download/v${X_JANUSGRAPH_VERSION}/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2.zip" | bsdtar -xf- -C /var/tmp && \
-      ([[ "${X_JANUSGRAPH_VERSION}" != '0.1.1' ]] || chmod +x janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/*); \
+      chmod +x janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/*; \
     elif [[ "${X_JANUSGRAPH_GIT_CHECKOUT}" ]];then\
       git clone -b ${X_JANUSGRAPH_GIT_CHECKOUT} ${X_JANUSGRAPH_GIT_URL} && \
       cd janusgraph && \

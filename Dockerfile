@@ -17,21 +17,21 @@ RUN \
     export TERM=dumb && \
     export LANG='en_US.UTF-8' && \
     source /opt/local/bin/x-set-shell-fonts-env.sh && \
-
+: && \
     echo -e "${FONT_INFO}[INFO] Update package database${FONT_DEFAULT}" && \
     reflector --latest 100 --verbose --sort score --save /etc/pacman.d/mirrorlist && \
     sudo -u nobody yaourt -Syy && \
     echo -e "${FONT_SUCCESS}[SUCCESS] Update package database${FONT_DEFAULT}" && \
-
-#    echo -e "${FONT_INFO}[INFO] Refresh package developer keys${FONT_DEFAULT}" && \
-#    pacman-key --refresh-keys && \
-#    echo -e "${FONT_SUCCESS}[SUCCESS] Refresh package developer keys${FONT_DEFAULT}" && \
-
+: && \
+: `#    echo -e "${FONT_INFO}[INFO] Refresh package developer keys${FONT_DEFAULT}" ` && \
+: `#    pacman-key --refresh-keys ` && \
+: `#    echo -e "${FONT_SUCCESS}[SUCCESS] Refresh package developer keys${FONT_DEFAULT}" ` && \
+: && \
     REQUIRED_PACKAGES=("jdk8-openjdk") && \
     echo -e "${FONT_INFO}[INFO] Install required packages [${REQUIRED_PACKAGES[@]}]${FONT_DEFAULT}" && \
     sudo -u nobody yaourt -S --needed --noconfirm --noprogressbar "${REQUIRED_PACKAGES[@]}" && \
-    echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PACKAGES[@]}]${FONT_SUCCESS}" && \
-
+    echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PACKAGES[@]}]${FONT_DEFAULT}" && \
+: && \
     echo -e "${FONT_INFO}[INFO] Install janusgraph-${X_JANUSGRAPH_VERSION}${X_JANUSGRAPH_GIT_CHECKOUT}${FONT_DEFAULT}" && \
     archlinux-java set java-8-openjdk && \
     cd /var/tmp && \
@@ -52,21 +52,28 @@ RUN \
       exit 1; \
     fi && \
     X_GREMLIN_VERSION=$(janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin.sh -v 2>/dev/null | egrep -o "Apache TinkerPop [^ ]+" | cut -d ' ' -f3) && \
-    LD_LIBRARY_PATH=/opt/local/hadoop/lib/native janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin-server.sh -i com.datastax.cassandra cassandra-driver-core ${X_CASSANDRA_DRIVER_VERSION} && \
+    LD_LIBRARY_PATH=${HADOOP_COMMON_LIB_NATIVE_DIR} janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin-server.sh -i com.datastax.cassandra cassandra-driver-core ${X_CASSANDRA_DRIVER_VERSION} && \
     janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/bin/gremlin-server.sh -i org.apache.tinkerpop gremlin-python ${X_GREMLIN_VERSION} && \
+    rm -rf janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/log && \
     porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -- mv janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2 /opt/local/. && \
     porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -+ -- ln -sf /opt/local/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2 /opt/local/janusgraph && \
+    porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -+ -- mkdir /var/log/janusgraph && \
+    porg --log --package="janusgraph-${X_JANUSGRAPH_VERSION}" -+ -- ln -sf /var/log/janusgraph /opt/local/janusgraph-${X_JANUSGRAPH_VERSION}-hadoop2/log && \
     echo -e "${FONT_SUCCESS}[SUCCESS] Install janusgraph-${X_JANUSGRAPH_VERSION}${FONT_DEFAULT}" && \
-
-#    REQUIRED_PYTHON_MODULES=("gremlinpython" "aiogremlin" "goblin") && \
+: && \
+: `#    REQUIRED_PYTHON_MODULES=("gremlinpython" "aiogremlin" "goblin") ` && \
     REQUIRED_PYTHON_MODULES=("gremlinpython") && \
     echo -e "${FONT_INFO}[INFO] Install required python packages [${REQUIRED_PYTHON_MODULES[@]}]${FONT_DEFAULT}" && \
     /opt/local/python-3/bin/pip3 install --upgrade "${REQUIRED_PYTHON_MODULES[@]}" && \
     echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PYTHON_MODULES[@]}]${FONT_DEFAULT}" && \
-
+: && \
     /opt/local/bin/x-archlinux-remove-unnecessary-files.sh && \
-#    pacman-optimize && \
+: `#    pacman-optimize && ` \
     rm -f /etc/machine-id
+
+ADD log4j-systemd-journal-appender-1.3.2.log4j-1.2.16.jna-4.0.0.jar /opt/local/janusgraph/lib/log4j-systemd-journal-appender-1.3.2.jar
+
+VOLUME ["/var/log/janusgraph"]
 
 WORKDIR /opt/local/janusgraph
 

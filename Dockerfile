@@ -4,10 +4,10 @@ FROM takaomag/base:2017.10.02.01.36
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \
-    X_JANUSGRAPH_VERSION=0.2.0 \
+#    X_JANUSGRAPH_VERSION=0.2.0 \
 #    X_JANUSGRAPH_GIT_URL=https://github.com/JanusGraph/janusgraph.git \
-#    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
-    X_CASSANDRA_DRIVER_VERSION=3.3.0 \
+    X_JANUSGRAPH_GIT_URL=https://github.com/sjudeng/janusgraph.git \
+    X_CASSANDRA_DRIVER_VERSION=3.3.2 \
     X_JANUSGRAPH_GIT_CHECKOUT=master
 #    X_JANUSGRAPH_GIT_CHECKOUT=tp33 \
 

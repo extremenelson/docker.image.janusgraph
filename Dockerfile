@@ -1,6 +1,6 @@
 # JanusGraph
 
-FROM takaomag/base:2017.10.02.01.36
+FROM takaomag/base:2017.12.18.09.45
 
 ENV \
     X_DOCKER_REPO_NAME=janusgraph \
@@ -62,10 +62,10 @@ RUN \
     echo -e "${FONT_SUCCESS}[SUCCESS] Install janusgraph-${X_JANUSGRAPH_VERSION}${FONT_DEFAULT}" && \
 : && \
 : `#    REQUIRED_PYTHON_MODULES=("gremlinpython" "aiogremlin" "goblin") ` && \
-    REQUIRED_PYTHON_MODULES=("gremlinpython") && \
-    echo -e "${FONT_INFO}[INFO] Install required python packages [${REQUIRED_PYTHON_MODULES[@]}]${FONT_DEFAULT}" && \
-    /opt/local/python-3/bin/pip3 install --upgrade "${REQUIRED_PYTHON_MODULES[@]}" && \
-    echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PYTHON_MODULES[@]}]${FONT_DEFAULT}" && \
+#    REQUIRED_PYTHON_MODULES=("gremlinpython") && \
+#    echo -e "${FONT_INFO}[INFO] Install required python packages [${REQUIRED_PYTHON_MODULES[@]}]${FONT_DEFAULT}" && \
+#    /opt/local/python-3/bin/pip3 install --upgrade "${REQUIRED_PYTHON_MODULES[@]}" && \
+#    echo -e "${FONT_SUCCESS}[SUCCESS] Install required packages [${REQUIRED_PYTHON_MODULES[@]}]${FONT_DEFAULT}" && \
 : && \
     /opt/local/bin/x-archlinux-remove-unnecessary-files.sh && \
 : `#    pacman-optimize && ` \
